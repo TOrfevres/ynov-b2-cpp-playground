@@ -6,7 +6,7 @@
 
 int days = 1;
 bool quit = false, run = true;
-Utils* utils = new Utils("..\\names.txt");
+Utils* utils = new Utils("..\\names.csv");
 
 //------------------------------------------------------------------------------------------------------------------O
 /**
