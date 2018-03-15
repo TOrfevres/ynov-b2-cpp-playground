@@ -24,6 +24,7 @@ private:
     bool isCrit();
 
 public:
+    Monster();
     Monster(Utils &utils, bool isMale);
 
     void desc();
@@ -39,6 +40,7 @@ public:
     int getLevel()const;
     int getValue()const;
     int getEnergy() const;
+    int getExp() const;
 
     int getCritChance() const;
 
@@ -46,6 +48,12 @@ public:
 
     void setStrength(int strength);
     void setHealth(int health);
+    void setName(const string &name);
+    void setExp(int exp);
+    void setCritChance(int critChance);
+    void setEnergy(int energy);
+    void setIsMale(bool isMale);
+    void setError(bool error);
 
     bool isError();
     void isAnError();

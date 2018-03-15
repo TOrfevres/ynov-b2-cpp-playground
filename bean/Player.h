@@ -29,6 +29,10 @@ public:
     int getGold();
 
     void addMonster(Monster &monster);
+
+    void setName(const string &name);
+    void setMonsters(const vector<Monster> &monsters);
+    void setGold(int gold);
 };
 
 

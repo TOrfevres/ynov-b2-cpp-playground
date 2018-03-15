@@ -12,4 +12,4 @@ if (Boost_FOUND)
     add_definitions( "-DHAS_BOOST" )
 endif()
 
-add_executable(Initiation main.cpp bean/Monster.cpp bean/Monster.h bean/Player.cpp bean/Player.h Utils.cpp Utils.h)
+add_executable(Initiation main.cpp bean/Monster.cpp bean/Monster.h bean/Player.cpp bean/Player.h Utils.cpp Utils.h SaveIO.cpp SaveIO.h)

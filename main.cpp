@@ -1,8 +1,10 @@
 #include <iostream>
 #include <boost/algorithm/string.hpp>
+#include <dirent.h>
 
 #include "bean/Monster.h"
 #include "bean/Player.h"
+#include "SaveIO.h"
 
 int days = 1;
 bool quit = false, run = true;
@@ -185,12 +187,18 @@ void mainMenu(Player &player) {
          "1- Manage your inventory" << endl <<
          "2- Go to dungeon" << endl <<
          "3- Sleep until the next day" << endl <<
+         "4- Save this game" << endl <<
+         "5- Load a game" << endl <<
          "0- Quit game" << endl <<
          "> ";
 
     int action;
     cin >> action;
     cout << endl;
+
+    string nameFile;
+    SaveIO* svr = nullptr;
+
     switch (action) {
         case 0:
             quit = true;
@@ -217,12 +225,55 @@ void mainMenu(Player &player) {
             }
             break;
 
+        case 4:
+            cout << "Name your save: ";
+            cin >> nameFile;
+
+            char newPath[225];
+            sprintf(newPath, "..\\saves\\%s.json", nameFile.c_str());
+
+            svr = new SaveIO(newPath);
+            svr->save({player, days});
+
+            cout << "Save created !" << endl;
+            break;
+
+        case 5:
+            DIR *dir;
+            struct dirent *ent;
+            if ((dir = opendir ("..\\saves\\")) != nullptr) {
+                int i = 0;
+                while ((ent = readdir (dir)) != nullptr) {
+                    string dirName = ent->d_name;
+                    if (dirName != "." && dirName != "..") {
+                        i++;
+                        printf("%d- %s\n", i, dirName.substr(0, dirName.size()-5).c_str());
+                    }
+                }
+                closedir (dir);
+            }
+
+            cout << "Chose your save (name expected): ";
+            cin >> nameFile;
+
+            char oldPath[225];
+            sprintf(oldPath, "..\\saves\\%s.json", nameFile.c_str());
+
+            svr = new SaveIO(oldPath);
+            days = svr->load().days;
+            player = svr->load().player;
+
+            cout << "Save loaded !" << endl;
+            break;
+
         default:break;
     }
 }
 
 //------------------------------------------------------------------------------------------------------------------O
 int main() {
+    srand((unsigned int) (time(nullptr)));
+
     cout << "Enter your name: ";
     string name;
     cin >> name;

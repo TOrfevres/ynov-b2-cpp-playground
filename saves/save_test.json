@@ -1,0 +1,31 @@
+{
+    "save": {
+        "player": {
+            "name": "player_test",
+            "monsters": [
+                {
+                    "name": "Keenan",
+                    "exp": "3",
+                    "strength": "37",
+                    "health": "47",
+                    "critChance": "3",
+                    "energy": "3",
+                    "isMale": "false",
+                    "error": "false"
+                },
+                {
+                    "name": "Tamela",
+                    "exp": "1133",
+                    "strength": "276",
+                    "health": "144",
+                    "critChance": "29",
+                    "energy": "0",
+                    "isMale": "true",
+                    "error": "false"
+                }
+            ],
+            "gold": "23"
+        },
+        "days": "2"
+    }
+}

@@ -11,8 +11,7 @@ Monster Player::breeding(Utils &utils, Monster &pOne, Monster &pTwo) {
     if (&pOne == &pTwo) {
         cout << "A monster can't breed with itself !" << endl;
 
-        Monster error(utils, rand() % 2 == 0);
-        error.isAnError();
+        Monster error;
         return error;
     }
 
@@ -45,8 +44,7 @@ Monster Player::breeding(Utils &utils, Monster &pOne, Monster &pTwo) {
     pOne.addExp(2 + pTwo.getLevel() * (lvlDiff < 2 ? lvlDiff : 2 ));
     pTwo.addExp(2 + pOne.getLevel() * (lvlDiff < 2 ? lvlDiff : 2 ));
 
-    Monster error(utils, rand() % 2 == 0);
-    error.isAnError();
+    Monster error;
     return error;
 }
 
@@ -78,4 +76,16 @@ bool Player::loseGold(int x) {
 
     cout << "Not enough gold !" << endl;
     return false;
+}
+
+void Player::setName(const string &name) {
+    Player::name = name;
+}
+
+void Player::setMonsters(const vector<Monster> &monsters) {
+    Player::monsters = monsters;
+}
+
+void Player::setGold(int gold) {
+    Player::gold = gold;
 }

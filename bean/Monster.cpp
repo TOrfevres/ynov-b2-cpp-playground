@@ -7,10 +7,16 @@
 
 #include "Monster.h"
 
+Monster::Monster() :
+        name("error"),
+        strength(0), health(0), critChance(0),
+        isMale(false), error(true) {
+}
+
 Monster::Monster(Utils &utils, bool isMale) :
         name(utils.getRandName(isMale)),
         strength(rand() % 25 + 25), health(rand() % 25 + 25), critChance(rand() % 5 + 1),
-        isMale(isMale){
+        isMale(isMale), error(false){
 }
 
 void Monster::desc() {
@@ -149,4 +155,32 @@ void Monster::isAnError() {
 
 bool Monster::isError() {
     return error;
+}
+
+int Monster::getExp() const {
+    return exp;
+}
+
+void Monster::setName(const string &name) {
+    Monster::name = name;
+}
+
+void Monster::setExp(int exp) {
+    Monster::exp = exp;
+}
+
+void Monster::setCritChance(int critChance) {
+    Monster::critChance = critChance;
+}
+
+void Monster::setEnergy(int energy) {
+    Monster::energy = energy;
+}
+
+void Monster::setIsMale(bool isMale) {
+    Monster::isMale = isMale;
+}
+
+void Monster::setError(bool error) {
+    Monster::error = error;
 }

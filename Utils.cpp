@@ -11,13 +11,12 @@
 #include "Utils.h"
 
 Utils::Utils(const std::string path) {
-    srand((unsigned int) (time(nullptr)));
-
     ifstream fileOfNames(path);
     string line;
     while (getline(fileOfNames, line)) {
         names.push_back(line);
     }
+    fileOfNames.close();
 }
 
 //------------------------------------------------------------------------------------------------------------------O
