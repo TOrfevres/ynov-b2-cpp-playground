@@ -1,5 +1,5 @@
 //
-// Created by major on 12/02/2018.
+// Created by Théodore Orfèvres on 12/02/2018.
 //
 
 #include <iostream>
@@ -7,14 +7,8 @@
 
 #include "Monster.h"
 
-Monster::Monster(const string &name) :
-        name(name),
-        strength(rand() % 25 + 25), health(rand() % 25 + 25), critChance(rand() % 5 + 1),
-        isMale(rand() % 2 == 0){
-}
-
-Monster::Monster(const string &name, bool isMale) :
-        name(name),
+Monster::Monster(Utils &utils, bool isMale) :
+        name(utils.getRandName(isMale)),
         strength(rand() % 25 + 25), health(rand() % 25 + 25), critChance(rand() % 5 + 1),
         isMale(isMale){
 }
@@ -147,4 +141,12 @@ bool Monster::fightAgainst(Monster &monster, int currentLevel) {
 
 int Monster::getCritChance() const {
     return critChance;
+}
+
+void Monster::isAnError() {
+    Monster::error = true;
+}
+
+bool Monster::isError() {
+    return error;
 }

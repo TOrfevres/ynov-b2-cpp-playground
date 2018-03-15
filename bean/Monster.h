@@ -1,11 +1,13 @@
 //
-// Created by major on 12/02/2018.
+// Created by Théodore Orfèvres on 12/02/2018.
 //
 
 #ifndef INITIATION_MONSTER_H
 #define INITIATION_MONSTER_H
 
 #include <string>
+#include "../Utils.h"
+
 using namespace std;
 
 class Monster {
@@ -17,12 +19,12 @@ private:
     int critChance;
     int energy = 3;
     bool isMale;
+    bool error = false;
 
     bool isCrit();
 
 public:
-    Monster(const string &name);
-    Monster(const string &name, bool isMale);
+    Monster(Utils &utils, bool isMale);
 
     void desc();
     void sleep();
@@ -44,6 +46,9 @@ public:
 
     void setStrength(int strength);
     void setHealth(int health);
+
+    bool isError();
+    void isAnError();
 };
 
 

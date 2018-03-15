@@ -1,45 +1,12 @@
 #include <iostream>
-#include <fstream>
-#include <ctime>
+#include <boost/algorithm/string.hpp>
 
 #include "bean/Monster.h"
 #include "bean/Player.h"
 
-int day = 1;
+int days = 1;
 bool quit = false, run = true;
-vector<string> names;
-
-//------------------------------------------------------------------------------------------------------------------O
-/**
- * Get a random name from the list built with a txt file
- * @return name (char *)
- */
-string getRandName() {
-    return names.at(rand() % names.size());
-}
-
-//------------------------------------------------------------------------------------------------------------------O
-/**
- * Translate amount of days played into a date
- * @return readable date
- */
-string getReadableCustomDate() {
-    return to_string(day / 360) + "Y-" + to_string((day / 30) % 12) + "M-" + to_string(day % 30) + "D";
-}
-
-//------------------------------------------------------------------------------------------------------------------O
-/**
- * Tell if a vector has a certain int value (index)
- * @param v vector
- * @param x index (int)
- * @return hasIndex (bool)
- */
-bool hasIndex(vector<int> v, int x) {
-    for (int y : v) {
-        if (y == x) return true;
-    }
-    return false;
-}
+Utils* utils = new Utils("..\\names.txt");
 
 //------------------------------------------------------------------------------------------------------------------O
 /**
@@ -64,6 +31,7 @@ vector<int> printSuccinctList(vector<Monster> list, int energy) {
 
     return v;
 }
+
 //------------------------------------------------------------------------------------------------------------------O
 /**
  * Menu manager of fights
@@ -91,7 +59,7 @@ void dungeonMenu(Player &player) {
         Monster &trainedM = player.getMonsters().at(monsterIndex - 1);
 
         while (trainedM.getEnergy() > 0) {
-            Monster wildM(getRandName());
+            Monster wildM(*utils, rand() % 2 == 0);
             if (!trainedM.fightAgainst(wildM, trainedM.getLevel())) trainedM.tired();
         }
 
@@ -105,7 +73,7 @@ void dungeonMenu(Player &player) {
  * @param player
  */
 void inventoryMenu(Player &player) {
-    Monster child("error");
+    Monster child(*utils, rand() % 2 == 0);
     vector<int> v, vt;
 
     cout << "----- INVENTORY (WALLET: " << player.getGold() << "$) -----" << endl <<
@@ -149,7 +117,7 @@ void inventoryMenu(Player &player) {
                 cin >> firstMonsterIndex;
                 cout << endl;
                 if (firstMonsterIndex > 0 && firstMonsterIndex <= player.getMonsters().size() &&
-                        hasIndex(v, firstMonsterIndex)) break;
+                        utils->hasIndex(v, firstMonsterIndex)) break;
             }
 
             cout << "Enter the index of the second monster you want to breed: " << endl;
@@ -162,17 +130,17 @@ void inventoryMenu(Player &player) {
                         secondMonsterIndex != firstMonsterIndex) break;
             }
 
-            child = player.breeding(getRandName(),
+            child = player.breeding(*utils,
                                     player.getMonsters().at(firstMonsterIndex - 1),
                                     player.getMonsters().at(secondMonsterIndex - 1));
 
-            if (child.getName() != "error") player.addMonster(child);
+            if (!child.isError()) player.addMonster(child);
 
             break;
 
         case 3:
             if (player.loseGold(100)) {
-                Monster monster(getRandName());
+                Monster monster(*utils, rand() % 2 == 0);
                 player.addMonster((Monster &) monster);
                 cout << endl << "You just summon " << monster.getName() << " !" << endl;
                 monster.desc();
@@ -212,7 +180,7 @@ void inventoryMenu(Player &player) {
  */
 void mainMenu(Player &player) {
     cout << "----- WELCOME " << player.getName() << " ! -----" << endl <<
-         "In game date : " << getReadableCustomDate() << endl <<
+         "In game date : " << utils->getReadableCustomDate(days) << endl <<
          "Enter the index of the chosen action :" << endl <<
          "1- Manage your inventory" << endl <<
          "2- Go to dungeon" << endl <<
@@ -243,7 +211,7 @@ void mainMenu(Player &player) {
             break;
 
         case 3:
-            day++;
+            days++;
             for (Monster &monster : player.getMonsters()) {
                 monster.sleep();
             }
@@ -255,22 +223,13 @@ void mainMenu(Player &player) {
 
 //------------------------------------------------------------------------------------------------------------------O
 int main() {
-    srand((unsigned int) (time(nullptr)));
-
-    ifstream fileOfNames("..\\names.txt");
-    string line;
-    while (getline(fileOfNames, line)) {
-        names.push_back(line);
-    }
-
-    cout << "Size of the list of names: " << names.size() << " (x!=0 OR SHUTDOWN)" << endl
-         << "Enter your name: ";
+    cout << "Enter your name: ";
     string name;
     cin >> name;
     cout << endl;
     Player player(name);
 
-    player.addMonster(*new Monster(getRandName()));
+    player.addMonster(*new Monster(*utils, rand() % 2 == 0));
 
     while (true) {
         mainMenu((Player &) player);

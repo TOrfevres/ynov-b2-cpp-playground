@@ -1,5 +1,5 @@
 //
-// Created by major on 12/02/2018.
+// Created by Théodore Orfèvres on 12/02/2018.
 //
 
 #ifndef INITIATION_PLAYER_H
@@ -20,7 +20,7 @@ private:
 public:
     Player(const string &name);
 
-    Monster breeding(string childName, Monster &pOne, Monster &pTwo);
+    Monster breeding(Utils &utils, Monster &pOne, Monster &pTwo);
     void earnGold(int x);
     bool loseGold(int x);
 

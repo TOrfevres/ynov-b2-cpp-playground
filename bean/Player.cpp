@@ -1,5 +1,5 @@
 //
-// Created by major on 12/02/2018.
+// Created by Théodore Orfèvres on 12/02/2018.
 //
 
 #include <iostream>
@@ -7,11 +7,12 @@
 
 Player::Player(const string &name) : name(name) {}
 
-Monster Player::breeding(string childName, Monster &pOne, Monster &pTwo) {
+Monster Player::breeding(Utils &utils, Monster &pOne, Monster &pTwo) {
     if (&pOne == &pTwo) {
         cout << "A monster can't breed with itself !" << endl;
 
-        Monster error("error");
+        Monster error(utils, rand() % 2 == 0);
+        error.isAnError();
         return error;
     }
 
@@ -22,12 +23,13 @@ Monster Player::breeding(string childName, Monster &pOne, Monster &pTwo) {
     if (pOne.getIsMale() ^ pTwo.getIsMale()) {
         int ratio = rand() % 10 + 5;
 
+        Monster child(utils, rand() % 2 == 0);
+
         cout << "----- BREEDING -----" << endl <<
              pOne.getName() << " (" << (ratio * 5) << "%) and " <<
              pTwo.getName() << " (" << (100 - ratio * 5) << "%) gave birth to " <<
-             childName << endl;
+             child.getName() << endl;
 
-        Monster child(childName);
         child.setHealth((pOne.getHealth() * ratio / 10 + pTwo.getHealth() * (20 - ratio) / 10) / 2 + rand() % 10);
         child.setStrength((pOne.getStrength() * ratio / 10 + pTwo.getStrength() * (20 - ratio) / 10) / 2 + rand() % 10);
         child.setStrength((pOne.getStrength() * ratio / 10 + pTwo.getStrength() * (20 - ratio) / 10) / 2 + rand() % 10);
@@ -43,7 +45,8 @@ Monster Player::breeding(string childName, Monster &pOne, Monster &pTwo) {
     pOne.addExp(2 + pTwo.getLevel() * (lvlDiff < 2 ? lvlDiff : 2 ));
     pTwo.addExp(2 + pOne.getLevel() * (lvlDiff < 2 ? lvlDiff : 2 ));
 
-    Monster error("error");
+    Monster error(utils, rand() % 2 == 0);
+    error.isAnError();
     return error;
 }
 
